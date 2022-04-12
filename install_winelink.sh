@@ -361,7 +361,24 @@ function run_installvara()  # Download / extract / install VARA HF/FM/Chat, then
             wine VARAChatInstaller/VARA\ Chat\ setup*.exe /SILENT # install VARA Chat
             
         # TODO: Add VARA SAT
-            
+        # Download / extract / install VARA Sat
+        echo -e "\n${GREENTXT}Downloading VARA Sat . . .${NORMTXT}\n"
+        VARASATLINK=$(curl -s https://rosmodem.wordpress.com/ | grep -oP '(?=https://mega.nz).*?(?=" target="_blank" rel="noopener noreferrer">VARA Sat v)') # --> get the download link
+        megadl ${VARACHATLINK} || { echo "VARA Sat download failed!" && run_giveup; }
+        7z x VARA\ Sat*.zip -o"VARASatInstaller"
+
+        echo -e "\n${GREENTXT}Installing VARA Sat . . .${NORMTXT}\n"
+        wine VARASatInstaller/VARA\ Sat\ setup*.exe /SILENT # install VARA Chat
+
+            # Create a VARA Sat desktop shortcut
+            echo '[Desktop Entry]'                                                                                            >> ~/Desktop/VARA\ Sat.desktop
+            echo 'Name=VARA Sat'                                                                                              >> ~/Desktop/VARA\ Sat.desktop
+            echo 'Exec=wine '$HOME'/.wine/drive_c/VARA/VARA\ VARASAT.exe'                                                     >> ~/Desktop/VARA\ Sat.desktop
+            echo 'Type=Application'                                                                                           >> ~/Desktop/VARA\ Sat.desktop
+            echo 'StartupNotify=true'                                                                                         >> ~/Desktop/VARA\ Sat.desktop
+            echo 'Icon=DF53_VARA Sat.0'                                                                                       >> ~/Desktop/VARA\ Sat.desktop
+            echo 'StartupWMClass=vara VARASAT.exe'                                                                                 >> ~/Desktop/VARA\ Sat.desktop
+
             # Make a VARA Chat desktop shortcut
             echo '[Desktop Entry]'                                                                                            >> ~/Desktop/VARA\ Chat.desktop
             echo 'Name=VARA Chat'                                                                                             >> ~/Desktop/VARA\ Chat.desktop
